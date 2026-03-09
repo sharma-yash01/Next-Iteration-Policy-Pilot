@@ -1,0 +1,12 @@
+# Pin <4.0 so dataset loading scripts (code_generation_lite.py) still run; 4.x removed support.
+datasets>=2.14.0,<4.0.0
+litellm
+tenacity
+python-Levenshtein
+scikit-learn
+xgboost
+jsonlines
+pandas
+numpy
+tqdm
+scipy
