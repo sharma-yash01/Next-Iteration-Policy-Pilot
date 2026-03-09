@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import re
 import time
 from typing import Any
@@ -19,6 +20,7 @@ from config import (
     DATA_DIR,
     LLM_TIMEOUT_SEC,
     MAX_ITERATIONS,
+    OPENROUTER_API_BASE,
     RATE_LIMIT_SLEEP,
 )
 from evaluate import run_tests
@@ -96,6 +98,8 @@ def call_llm(prompt: str, model: str) -> str | None:
             model=model,
             messages=[{"role": "user", "content": prompt}],
             timeout=LLM_TIMEOUT_SEC,
+            api_base=OPENROUTER_API_BASE,
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
         )
     except Exception as e:
         logger.exception("call_llm failed: %s", e)
@@ -256,6 +260,8 @@ def get_self_verification_score(problem: str, code: str, model: str) -> float:
             logprobs=True,
             top_logprobs=5,
             timeout=LLM_TIMEOUT_SEC,
+            api_base=OPENROUTER_API_BASE,
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
         )
         return _extract_yes_probability(response)
     except Exception as e:
@@ -272,6 +278,8 @@ def get_self_verification_score(problem: str, code: str, model: str) -> float:
             max_tokens=20,
             response_format={"type": "json_object"},
             timeout=LLM_TIMEOUT_SEC,
+            api_base=OPENROUTER_API_BASE,
+            api_key=os.environ.get("OPENROUTER_API_KEY"),
         )
         raw = None
         try:
